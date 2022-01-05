@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 const InfoElement = ({ dateOfClass }) => {
   //likely I'll want to make objects and then do "object contains"
 

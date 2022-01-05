@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { fetchData, writeNewentry } from "./services/api";
+import { fetchData, sendData, exportToCsv } from "./services/api";
 
 function App() {
   const [date, setDate] = useState();
@@ -13,8 +13,7 @@ function App() {
   // compare objects from data.json
 
   useEffect(() => {
-    fetchData();
-    writeNewentry();
+    // fetchData();
   }, []);
 
   //other things
@@ -37,7 +36,16 @@ function App() {
 
   const onSubmit = () => {
     console.log("onSubmit");
+    sendData({ class: { date }, students: formatList(list) });
+    setList("");
   };
+
+  function formatList(list) {
+    if (list) {
+      return list.split("\n");
+    }
+    return;
+  }
 
   return (
     <div className="App">
@@ -49,7 +57,7 @@ function App() {
         <label htmlFor="Date">Date of Class</label>
         <input
           style={{ marginBottom: 16 }}
-          type="text"
+          type="date"
           name="Date"
           onChange={handleDateChange}
         />
@@ -64,24 +72,8 @@ function App() {
           Submit this List
         </button>
       </div>
-      <div className="InfoContainer">
-        <div className="ListContainer">
-          <h3>List {date}</h3>
-          <div className="InfoListDiv">
-            <p>
-              Total Students: <span>{count}</span>
-            </p>
-            <p>
-              Students from Last Week: <span></span>
-            </p>
-            <p>
-              Returning Students: <span></span>
-            </p>
-            <p>
-              New Students: <span></span>
-            </p>
-          </div>
-        </div>
+      <div>
+        <button onClick={exportToCsv}>EXPORT TO CSV</button>
       </div>
     </div>
   );
